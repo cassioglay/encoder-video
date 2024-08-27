@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 
 	"cloud.google.com/go/storage"
 	"github.com/cassioglay/encoder/aplication/repositories"
@@ -20,7 +21,7 @@ func NewVideoService() VideoService {
 	return VideoService{}
 }
 
-func (v *VideoService) DownLoad(buckeName string) error {
+func (v *VideoService) DownLoad(bucketName string) error {
 
 	ctx := context.Background()
 
@@ -30,7 +31,7 @@ func (v *VideoService) DownLoad(buckeName string) error {
 		return err
 	}
 
-	bkt := client.Bucket(buckeName)
+	bkt := client.Bucket(bucketName)
 	obj := bkt.Object(v.Video.FilePath)
 
 	r, err := obj.NewReader(ctx)
@@ -64,4 +65,34 @@ func (v *VideoService) DownLoad(buckeName string) error {
 	log.Printf("video %v has been stored", v.Video.ID)
 
 	return nil
+}
+
+func (v *VideoService) Fragment() error {
+
+	err := os.Mkdir(os.Getenv("localStoragePath")+"/"+v.Video.ID, os.ModePerm)
+
+	if err != nil {
+		return err
+	}
+
+	source := os.Getenv("localStoragePath") + "/" + v.Video.ID + ".mp4"
+	target := os.Getenv("localStoragePath") + "/" + v.Video.ID + ".frag"
+
+	cmd := exec.Command("mp4fragment", source, target)
+	output, err := cmd.CombinedOutput()
+
+	if err != nil {
+		return err
+	}
+
+	printOutput(output)
+
+	return nil
+
+}
+
+func printOutput(out []byte) {
+	if len(out) > 0 {
+		log.Panicf("======> Output: %s\n", string(out))
+	}
 }
