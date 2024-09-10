@@ -93,6 +93,6 @@ func (v *VideoService) Fragment() error {
 
 func printOutput(out []byte) {
 	if len(out) > 0 {
-		log.Panicf("======> Output: %s\n", string(out))
+		log.Printf("======> Output: %s\n", string(out))
 	}
 }
