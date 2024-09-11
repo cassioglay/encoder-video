@@ -52,4 +52,7 @@ func TestDownload(t *testing.T) {
 
 	err = videoService.Fragment()
 	require.Nil(t, err)
+
+	err = videoService.Encode()
+	require.Nil(t, err)
 }

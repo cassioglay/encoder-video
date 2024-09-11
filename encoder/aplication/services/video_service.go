@@ -91,6 +91,28 @@ func (v *VideoService) Fragment() error {
 
 }
 
+func (v *VideoService) Encode() error {
+	cmdArgs := []string{}                                                           // Bento4 commnands
+	cmdArgs = append(cmdArgs, os.Getenv("localStoragePath")+"/"+v.Video.ID+".frag") // Get video frag
+	cmdArgs = append(cmdArgs, "--use-segment-timeline")                             // Crop video into any parts
+	cmdArgs = append(cmdArgs, "-o")                                                 // Output save
+	cmdArgs = append(cmdArgs, os.Getenv("localStoragePath")+"/"+v.Video.ID)         // Path to save
+	cmdArgs = append(cmdArgs, "-f")
+	cmdArgs = append(cmdArgs, "--exec-dir")
+	cmdArgs = append(cmdArgs, "/opt/bento4/bin/")
+	cmd := exec.Command("mp4dash", cmdArgs...)
+
+	output, err := cmd.CombinedOutput()
+
+	if err != nil {
+		return err
+	}
+
+	printOutput(output)
+
+	return nil
+}
+
 func printOutput(out []byte) {
 	if len(out) > 0 {
 		log.Printf("======> Output: %s\n", string(out))
