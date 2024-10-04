@@ -16,7 +16,7 @@ import (
 
 func init() {
 
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load("../../../.env")
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -31,7 +31,7 @@ func prepare() (*domain.Video, repositories.VideoRepositoryDb) {
 
 	video := domain.NewVideo()
 	video.ID = uuid.NewV4().String()
-	video.FilePath = "videos/bird.mp4"
+	video.FilePath = "videos/tokyo.mp4"
 	video.CreatedAt = time.Now()
 
 	repo := repositories.VideoRepositoryDb{Db: db}
