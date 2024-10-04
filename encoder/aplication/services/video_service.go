@@ -117,23 +117,23 @@ func (v *VideoService) Finish() error {
 
 	err := os.Remove(os.Getenv("localStoragePath") + "/" + v.Video.ID + ".mp4")
 	if err != nil {
-		log.Println("Error removing mp4 ", v.Video.ID, ".mp4")
+		log.Println("error removing mp4 ", v.Video.ID, ".mp4")
 		return err
 	}
 
 	err = os.Remove(os.Getenv("localStoragePath") + "/" + v.Video.ID + ".frag")
 	if err != nil {
-		log.Println("Error removing frag ", v.Video.ID, ".frag")
+		log.Println("error removing frag ", v.Video.ID, ".frag")
 		return err
 	}
 
 	err = os.RemoveAll(os.Getenv("localStoragePath") + "/" + v.Video.ID)
 	if err != nil {
-		log.Println("Error removing folder ", v.Video.ID)
+		log.Println("error removing mp4 ", v.Video.ID, ".mp4")
 		return err
 	}
 
-	log.Println("Files have beeb removed:" + v.Video.ID)
+	log.Println("files have been removed: ", v.Video.ID)
 
 	return nil
 
