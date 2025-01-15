@@ -8,7 +8,7 @@ import (
 
 type Video struct {
 	ID         string    `json:"encoded_video_folder" valid:"uuid" gorm:"type:uuid;primary_key"`
-	ResourceID string    `json:"resouce_id" valid:"notnull" gorm:"type:varchar(255)"`
+	ResourceID string    `json:"resource" valid:"notnull" gorm:"type:varchar(255)"`
 	FilePath   string    `json:"-" valid:"notnull" gorm:"type:varchar(255)"`
 	CreatedAt  time.Time `json:"-" valid:"-"`
 	Jobs       []*Job    `json:"-" valid:"-" gorm:"ForeignKey:VideoID"`
