@@ -1,5 +1,6 @@
 
-This application manager videos, download, convert and upload to local choosed!<br>
+### This application manager videos, download, convert and upload to local choosed!<br>
+
 #### Only follow steps below!!!
 
 
@@ -7,6 +8,8 @@ This application manager videos, download, convert and upload to local choosed!<
 
 1 - docker exec -it encoder-video bash </br>
 2 - cd ./encoder </br>
+3 - rename .env-example to .env </br>
+4 - add your informatios on .env file </br>
 3 - go run framework/cmd/server/server.go
 
 ### 🛠 Tech and Libraries
