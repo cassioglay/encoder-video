@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/cassioglay/encoder/domain"
@@ -10,6 +11,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 )
+
+var Mutex = &sync.Mutex{}
 
 type JobWorkerResult struct {
 	Job     domain.Job
@@ -27,8 +30,10 @@ func JobWorker(messageChanel chan amqp.Delivery, returnChan chan JobWorkerResult
 			continue
 		}
 
+		Mutex.Lock() // Magament race codition | Lock
 		err = json.Unmarshal(message.Body, &jobService.VideoService.Video)
 		jobService.VideoService.Video.ID = uuid.NewV4().String()
+		Mutex.Unlock() // Unlock
 
 		if err != nil {
 			returnChan <- returnJobResult(domain.Job{}, message, err)
@@ -42,7 +47,9 @@ func JobWorker(messageChanel chan amqp.Delivery, returnChan chan JobWorkerResult
 			continue
 		}
 
+		Mutex.Lock()
 		err = jobService.VideoService.InserVideo()
+		Mutex.Unlock()
 
 		if err != nil {
 			returnChan <- returnJobResult(domain.Job{}, message, err)
@@ -55,7 +62,9 @@ func JobWorker(messageChanel chan amqp.Delivery, returnChan chan JobWorkerResult
 		job.Status = "STARTING"
 		job.CreatedAt = time.Now()
 
+		Mutex.Lock()
 		_, err = jobService.JobRepository.Insert(&job)
+		Mutex.Unlock()
 
 		if err != nil {
 			returnChan <- returnJobResult(domain.Job{}, message, err)
