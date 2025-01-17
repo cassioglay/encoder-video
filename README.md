@@ -9,7 +9,7 @@
 1 - docker exec -it encoder-video bash </br>
 2 - cd ./encoder </br>
 3 - rename .env-example to .env </br>
-4 - add your informatios on .env file </br>
+4 - add your information on .env file </br>
 5 - go run framework/cmd/server/server.go
 
 ### 🛠 Tech and Libraries
