@@ -10,7 +10,7 @@
 2 - cd ./encoder </br>
 3 - rename .env-example to .env </br>
 4 - add your informatios on .env file </br>
-3 - go run framework/cmd/server/server.go
+5 - go run framework/cmd/server/server.go
 
 ### 🛠 Tech and Libraries
 
