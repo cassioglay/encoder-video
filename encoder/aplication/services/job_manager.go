@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"sync"
 
 	"github.com/cassioglay/encoder/aplication/repositories"
 	"github.com/cassioglay/encoder/domain"
@@ -19,6 +20,7 @@ type JobManager struct {
 	MessageChanel    chan amqp.Delivery
 	JobReturnChannel chan JobWorkerResult
 	RabbitMQ         *queue.RabbitMQ
+	Mutex            sync.Mutex
 }
 
 type JobNotificationError struct {
@@ -74,7 +76,9 @@ func (j *JobManager) Start(ch *amqp.Channel) {
 
 func (j *JobManager) notifySuccess(jobResult JobWorkerResult, ch *amqp.Channel) error {
 
+	Mutex.Lock()
 	jobJson, err := json.Marshal(jobResult.Job)
+	Mutex.Unlock()
 
 	if err != nil {
 		return err
